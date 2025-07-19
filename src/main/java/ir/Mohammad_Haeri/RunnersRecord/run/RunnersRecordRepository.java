@@ -11,7 +11,7 @@ import java.util.Optional;
 
 @Repository
 public class RunnersRecordRepository {
-    private List<Run> runsList = new ArrayList<>();
+    private final List<Run> runsList = new ArrayList<>();
 
     public List<Run> getAll() {
         return runsList;
