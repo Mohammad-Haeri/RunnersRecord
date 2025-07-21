@@ -105,6 +105,7 @@ public class RunnersRecordRepository {
 
     public void delete(int id) {
         var deleted = jdbcClient.sql("DELETE FROM Run WHERE id = :id")
+                // Cannot resolve query paramete error in line 109 is IDE's false positive error.
                 .param("id", id)
                 .update();
 
