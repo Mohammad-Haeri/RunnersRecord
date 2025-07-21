@@ -70,6 +70,7 @@ public class RunnersRecordRepository {
 
     public Optional<Run> getById(int id) {
         return jdbcClient.sql("SELECT * FROM Run WHERE id = :id")
+                // Cannot resolve query paramete error in line 74 is IDE's false positive error.
                 .param("id", id)
                 .query(Run.class)
                 .optional();
