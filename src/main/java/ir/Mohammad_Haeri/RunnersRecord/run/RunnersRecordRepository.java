@@ -1,5 +1,7 @@
 package ir.Mohammad_Haeri.RunnersRecord.run;
 
+import ir.Mohammad_Haeri.RunnersRecord.Utils;
+import jakarta.annotation.Nullable;
 import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,48 +26,10 @@ public class RunnersRecordRepository {
     }
 
 
-    //Must be changed later to use JDBC
-    private final List<Run> runsList = new ArrayList<>();
-
     public List<Run> getAll() {
         return jdbcClient.sql("SELECT * FROM Run")
                 .query(Run.class)
                 .list();
-    }
-
-    @PostConstruct
-    private void init() {
-
-//        runsList.add(new Run(
-//                1,
-//                "First Run",
-//                LocalDateTime.now().minusHours(10).toEpochSecond(ZoneOffset.UTC),
-//                LocalDateTime.now().minusHours(10).plusMinutes(2).toEpochSecond(ZoneOffset.UTC),
-//                4010,
-//                98,
-//                Location.OUTDOOR
-//        ));
-//
-//        runsList.add(new Run(
-//                2,
-//                "Second Run",
-//                LocalDateTime.now().minusHours(6).toEpochSecond(ZoneOffset.UTC),
-//                LocalDateTime.now().plusMinutes(4).toEpochSecond(ZoneOffset.UTC),
-//                6212,
-//                85,
-//                Location.OUTDOOR
-//        ));
-//
-//        runsList.add(new Run(
-//                3,
-//                "Third Run",
-//                LocalDateTime.now().minusHours(3).toEpochSecond(ZoneOffset.UTC),
-//                LocalDateTime.now().plusMinutes(3).toEpochSecond(ZoneOffset.UTC),
-//                7650,
-//                100,
-//                Location.OUTDOOR
-//        ));
-
     }
 
     public Optional<Run> getById(int id) {
@@ -76,8 +40,12 @@ public class RunnersRecordRepository {
                 .optional();
     }
 
-    public void create(Run run) {
-        var inserted = jdbcClient.sql("INSERT INTO Run(id, title, started_on, completed_on, meters, score, location) VALUES(?,?,?,?,?,?,?)")
+    private int create(Run run) {
+        return jdbcClient.sql("""
+                        INSERT INTO Run(id, title, started_on, completed_on, meters, score, location) 
+                        VALUES(?,?,?,?,?,?,?)
+                        ON CONFLICT (id) DO NOTHING
+                        """)
                 .param(run.id())
                 .param(run.title())
                 .param(run.startedOn())
@@ -86,7 +54,15 @@ public class RunnersRecordRepository {
                 .param(run.score())
                 .param(run.location().name())
                 .update();
-        Assert.state(inserted == 1, "Inserting " + run.title() + " has been failed.");
+    }
+
+    public void create(Run run, boolean isInitial) {
+        if (!isInitial) {
+            int result = create(run);
+            Assert.state(result == 1, "Inserting " + run.title() + " has been failed.");
+        } else {
+            Utils.ignore(create(run));
+        }
     }
 
     public void update(Run run, int id) {
@@ -116,18 +92,16 @@ public class RunnersRecordRepository {
         return jdbcClient.sql("SELECT * FROM Run").query().listOfRows().size();
     }
 
-    public void createAll(List<Run> runs) {
-        runs.stream().forEach(this::create);
+    public void createAll(List<Run> runs, boolean isInitial) {
+        runs.forEach(run -> this.create(run, isInitial));
     }
 
     public List<Run> findByEventLocation(Location location) {
         return jdbcClient.sql("SELECT * FRON Run WHERE location = :location")
-                .param("location", location.toString())
+                .param("location", location.name())
                 .query(Run.class)
                 .list();
     }
-
-
 }
 
 
