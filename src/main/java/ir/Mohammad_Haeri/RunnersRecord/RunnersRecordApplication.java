@@ -48,7 +48,7 @@ public class RunnersRecordApplication {
                     5428,
                     90,
                     Location.OUTDOOR));
-            repository.createAll(runs);
+            repository.createAll(runs, true);
         };
 
     }

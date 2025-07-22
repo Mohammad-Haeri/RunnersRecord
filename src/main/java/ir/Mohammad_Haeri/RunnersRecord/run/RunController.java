@@ -36,7 +36,7 @@ public class RunController {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/create")
     public void create(@Valid @RequestBody Run run) {
-        this.repository.create(run);
+        this.repository.create(run, false);
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
