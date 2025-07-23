@@ -1,12 +1,14 @@
 package ir.Mohammad_Haeri.RunnersRecord.run;
 
 import jakarta.validation.constraints.*;
+import org.springframework.data.annotation.Id;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 
 public record Run(
         @Positive
+        @Id
         int id,
         @NotEmpty
         String title,
