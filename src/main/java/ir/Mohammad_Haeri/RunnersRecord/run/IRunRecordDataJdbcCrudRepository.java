@@ -4,7 +4,7 @@ import org.springframework.data.repository.ListCrudRepository;
 
 import java.util.List;
 
-public interface IRunRecordRepository extends ListCrudRepository<Run, Integer> {
+public interface IRunRecordDataJdbcCrudRepository extends ListCrudRepository<Run, Integer> {
 
     List<Run> findAllByLocation(Location location);
 
