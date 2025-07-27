@@ -1,0 +1,1 @@
+SELECT * FROM Run WHERE location = :location;
