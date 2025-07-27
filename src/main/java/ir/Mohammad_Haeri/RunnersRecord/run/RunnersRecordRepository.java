@@ -24,8 +24,7 @@ import java.util.Optional;
  * aware of my db and sql model and ... . the easiest way is to suppress the warning, but I am going to implement 2
  * way to solve that warning.
  * 1: using Named Parameter Jdbc Template(MapSqlParameterSource)
- * 2: more robust and reusable and scalable and test suited way of using the query in .sql file and load it here and
- * combine it with Named Parameter Jdbc Template.</p>
+ * 2: more robust and reusable and scalable and test suited way of using the query in .sql file and load it here .</p>
  * <p><h6> At the end all the 2 way are just to demonstrate the implementation. my experience say that in terms of
  * scalability factors and testability factors and ..., the 3rd is more senior-eng way.</h6></p><br/>
  * <a href="https://www.Mohammad-Haeri.ir">Portfolio</a> -
@@ -37,7 +36,7 @@ import java.util.Optional;
 
 @Repository
 public class RunnersRecordRepository {
-    private static final Logger log = LoggerFactory.getLogger(RunnersRecordRepository.class);
+//    private static final Logger log = LoggerFactory.getLogger(RunnersRecordRepository.class);
 
 
     private final JdbcClient jdbcClient;
