@@ -127,4 +127,12 @@ class RunControllerTest {
         var allByScoreBetween = jdbcRepository.findAllByScoreBetween(90, 100);
         assertFalse(allByScoreBetween.isEmpty());
     }
+
+    @Test
+    void getCount(){
+        var all = this.repository.getAll();
+        int count = this.repository.count();
+
+        assertEquals(all.size(), count);
+    }
 }
