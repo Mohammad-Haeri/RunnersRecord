@@ -59,7 +59,7 @@ public class RunnersRecordRepository {
     public void create(Run run, boolean isInitial) {
         if (!isInitial) {
             int result = create(run);
-            Assert.state(result == 1, "Inserting " + run.title() + " has been failed.");
+            Assert.state(result == 1, "Inserting " + run.title() + " With Id of "+ run.id() + " has been failed.");
         } else {
             Utils.ignore(create(run));
         }
@@ -67,13 +67,13 @@ public class RunnersRecordRepository {
 
     public void update(Run run, int id) {
         var updated = jdbcClient.sql("UPDATE run SET title = ?, started_on = ?, completed_on = ?, meters = ?, score = ?, location = ? WHERE id = ?")
-                .param(run.id())
                 .param(run.title())
                 .param(run.startedOn())
                 .param(run.completedOn())
                 .param(run.meters())
                 .param(run.score())
                 .param(run.location().name())
+                .param(id)
                 .update();
 
         Assert.state(updated == 1, "Updating " + run.title() + " has been failed.");
