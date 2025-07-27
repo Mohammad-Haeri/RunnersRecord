@@ -9,16 +9,16 @@ import java.time.ZoneOffset;
 public record Run(
         @Positive
         @Id
-        int id,
+        Integer id,
         @NotEmpty
         String title,
         LocalDateTime startedOn,
         LocalDateTime completedOn,
         @PositiveOrZero
-        int meters,
+        Integer meters,
         @Max(100)
         @Min(0)
-        int score,
+        Integer score,
         Location location
 ) {
         public Run{
