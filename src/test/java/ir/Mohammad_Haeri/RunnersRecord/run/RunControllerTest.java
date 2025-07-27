@@ -38,13 +38,6 @@ class RunControllerTest {
 
     @Test
     @Order(2)
-    void getById() {
-        Optional<Run> run = this.repository.getById(1);
-        assertTrue(run.isPresent());
-    }
-
-    @Test
-    @Order(3)
     void create() {
         var allBeforeInsert = this.repository.getAll();
         Run newRun = new Run(
@@ -60,6 +53,13 @@ class RunControllerTest {
 
         assertTrue(allBeforeInsert.size() < allAfterInsert.size());
         brittleness = false;
+    }
+
+    @Test
+    @Order(3)
+    void getById() {
+        Optional<Run> run = this.repository.getById(testId);
+        assertTrue(run.isPresent());
     }
 
     @Test
@@ -99,7 +99,13 @@ class RunControllerTest {
     }
 
     @Test
-    void getAllByLocation() {
+    void getAllByLocationRunnersRecordRepository() {
+        var byLocation = this.repository.findAllByLocation(Location.OUTDOOR);
+        assertFalse(byLocation.isEmpty());
+    }
+
+    @Test
+    void getAllByLocationIRunRecordDataJdbcCrudRepository() {
         var allByLocation = jdbcRepository.findAllByLocation(Location.OUTDOOR);
         assertFalse(allByLocation.isEmpty());
     }
